@@ -2,7 +2,6 @@ package com.CryptoMarket.utill.parserJsonCoinMarketCap.briefInformation;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -14,11 +13,11 @@ public class BriefDataAboutCrypto {
     @SerializedName("num_market_pairs")
     private int numMarketPairs;
     @SerializedName("circulating_supply")
-    private int circulatingSupply;
+    private double circulatingSupply;
     @SerializedName("total_supply")
-    private int totalSupply;
+    private double totalSupply;
     @SerializedName("max_supply")
-    private int maxSupply;
+    private double maxSupply;
     @SerializedName("last_updated")
     private Date lastUpdated;
     @SerializedName("date_added")

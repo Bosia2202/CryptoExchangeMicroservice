@@ -1,7 +1,7 @@
 package com.CryptoMarket.utill.converter;
 
 import com.CryptoMarket.interfeces.ConvertInterface;
-import com.CryptoMarket.utill.parserJsonCoinMarketCap.CurrentInfoAboutCryptocurrency;
+import com.CryptoMarket.utill.parserJsonCoinMarketCap.finalView.CurrentInfoAboutCryptocurrency;
 import com.CryptoMarket.utill.parserJsonCoinMarketCap.briefInformation.BriefDataAboutCrypto;
 import com.CryptoMarket.utill.parserJsonCoinMarketCap.chart.ChartData;
 import org.springframework.stereotype.Component;
@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 @Component
 public class ConvertToCryptoCurrenciesData implements ConvertInterface {
 
-    @Override
-    public CurrentInfoAboutCryptocurrency concatenation(CurrentInfoAboutCryptocurrency currentInfoAboutCryptocurrency, ChartData chartData) {
-        currentInfoAboutCryptocurrency.setChart(chartData.getData().getQuotes());
-        return currentInfoAboutCryptocurrency;
-    }
+//    @Override
+//    public CurrentInfoAboutCryptocurrency concatenation(CurrentInfoAboutCryptocurrency currentInfoAboutCryptocurrency, ChartData chartData) {
+//        currentInfoAboutCryptocurrency.setChart(chartData.getData().getQuotes());
+//        return currentInfoAboutCryptocurrency;
+//    }
 
     @Override
     public ArrayList<CurrentInfoAboutCryptocurrency> getConvertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency(ArrayList<BriefDataAboutCrypto> briefDataAboutCryptoArrayList) {

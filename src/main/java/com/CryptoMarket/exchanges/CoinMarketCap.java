@@ -1,11 +1,11 @@
-package com.CryptoMarket.apiExchange;
+package com.CryptoMarket.exchanges;
 
 import com.CryptoMarket.interfeces.ConvertInterface;
+import com.CryptoMarket.interfeces.CryptoExchange;
 import com.CryptoMarket.interfeces.ParserInterface;
-import com.CryptoMarket.utill.parserJsonCoinMarketCap.CryptocurrenciesData;
-import com.CryptoMarket.utill.parserJsonCoinMarketCap.CurrentInfoAboutCryptocurrency;
+import com.CryptoMarket.utill.parserJsonCoinMarketCap.finalView.CryptocurrenciesData;
+import com.CryptoMarket.utill.parserJsonCoinMarketCap.finalView.CurrentInfoAboutCryptocurrency;
 import com.CryptoMarket.utill.parserJsonCoinMarketCap.briefInformation.DefaultInfoOfAllCryptocurrencies;
-import com.CryptoMarket.utill.parserJsonCoinMarketCap.chart.ChartData;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.NoArgsConstructor;
@@ -31,30 +31,20 @@ import java.util.*;
 @Component
 @Slf4j
 @NoArgsConstructor
-public class CoinMarketCap {
+public class CoinMarketCap implements CryptoExchange {
 
     private CloseableHttpClient client;
-
     @Value("${cryptoApi.key}")
     private String cryptoApiKey;
-
     @Value("${cryptoApi.timeInterval}")
     private String timeInterval;
-
     @Value("${cryptoApi.amountOfPoints}")
     private String amountOfPoints;
-
     @Value("${cryptoApi.limit}")
     private String limit;
-
     @Value("${cryptoApi.latestUrl}")
     private String latestUrl;
-
-    @Value("${cryptoApi.historicalUrl}")
-    private String historicalUrl;
-
     private ConvertInterface converter;
-
     private ParserInterface parser;
 
     @Autowired
@@ -69,47 +59,18 @@ public class CoinMarketCap {
         log.debug("Start CoinMarketCap");
     }
 
-    public Optional<CryptocurrenciesData> getInfo(){
+    @Override
+    public Optional<CryptocurrenciesData> getExchangeInfo(){
         return getBriefInfoAboutCryptocurrencies(client).map(this::getCryptoCurrenciesData);
     }
 
     private CryptocurrenciesData getCryptoCurrenciesData(String stringJsonBriefInfoAboutCryptocurrencies) {
-        CryptocurrenciesData returnStatement = new CryptocurrenciesData();
+        CryptocurrenciesData returnValue = new CryptocurrenciesData();
         DefaultInfoOfAllCryptocurrencies defaultInfoOfAllCryptocurrencies = parser.parsingOfAllCryptocurrenciesFromApi(stringJsonBriefInfoAboutCryptocurrencies);
         ArrayList<CurrentInfoAboutCryptocurrency> cryptocurrencyArrayList = converter.getConvertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency(
                 defaultInfoOfAllCryptocurrencies.getData());
-        for(CurrentInfoAboutCryptocurrency cryptocurrency : cryptocurrencyArrayList) {
-            Optional<String> jsonChart = getChartForSelectCrypto(client, cryptocurrency.getId());
-            if (jsonChart.isPresent()) {
-                ChartData chart = parser.parsingOfChartCryptocurrenciesFromApi(jsonChart.get());
-                returnStatement.addElement(converter.concatenation(cryptocurrency, chart));
-            } else {
-                log.warn("The graph for this cryptocurrency '" + cryptocurrency.getCryptoName() + "' (id = " + cryptocurrency.getId() + ") was not found");
-            }
-        }
-        return returnStatement;
-    }
-
-    private Optional<String> getChartForSelectCrypto(CloseableHttpClient client,int id) {
-        List<NameValuePair> parameters = new ArrayList<>();
-        parameters.add(new BasicNameValuePair("id",(String.valueOf(id))));
-        parameters.add(new BasicNameValuePair("interval",timeInterval));
-        parameters.add(new BasicNameValuePair("count",amountOfPoints));
-        Optional<HttpGet> requestOptional = buildGetRequest(historicalUrl,parameters);
-        if (requestOptional.isPresent()) {
-            try {
-                CloseableHttpResponse response = client.execute(requestOptional.get());
-                HttpEntity entity = response.getEntity();
-                String json = EntityUtils.toString(entity);
-                response.close();
-                return Optional.of(json);
-            } catch (IOException exception) {
-                log.error("The GET request could not be sent.\nException: "+ exception.getMessage());
-            }
-        } else {
-            log.error("The GET request could not be received");
-        }
-        return Optional.empty();
+        returnValue.setCurrentInfoAboutCryptocurrencies(cryptocurrencyArrayList);
+        return returnValue;
     }
 
     private Optional<String> getBriefInfoAboutCryptocurrencies(CloseableHttpClient client)  {
@@ -155,4 +116,6 @@ public class CoinMarketCap {
             log.error(ioException.getMessage());
         }
     }
+
+
 }

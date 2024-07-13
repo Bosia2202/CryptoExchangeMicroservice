@@ -1,4 +1,4 @@
-package com.CryptoMarket.utill.parserJsonCoinMarketCap;
+package com.CryptoMarket.utill.parserJsonCoinMarketCap.finalView;
 
 import lombok.Data;
 

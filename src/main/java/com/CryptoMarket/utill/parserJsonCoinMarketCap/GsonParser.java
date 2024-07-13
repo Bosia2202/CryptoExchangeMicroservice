@@ -1,4 +1,4 @@
-package com.CryptoMarket.utill;
+package com.CryptoMarket.utill.parserJsonCoinMarketCap;
 
 import com.CryptoMarket.interfeces.ParserInterface;
 import com.CryptoMarket.utill.parserJsonCoinMarketCap.briefInformation.DefaultInfoOfAllCryptocurrencies;

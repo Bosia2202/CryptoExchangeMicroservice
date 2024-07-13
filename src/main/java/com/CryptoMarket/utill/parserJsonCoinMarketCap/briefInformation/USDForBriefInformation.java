@@ -21,7 +21,7 @@ public class USDForBriefInformation {
     @SerializedName("market_cap")
     private double marketCap;
     @SerializedName("market_cap_dominance")
-    private int marketCapDominance;
+    private double marketCapDominance;
     @SerializedName("fully_diluted_market_cap")
     private double fullyDilutedMarketCap;
     @SerializedName("last_updated")

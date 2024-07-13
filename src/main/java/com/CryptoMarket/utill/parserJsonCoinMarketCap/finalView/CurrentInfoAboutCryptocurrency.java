@@ -1,4 +1,4 @@
-package com.CryptoMarket.utill.parserJsonCoinMarketCap;
+package com.CryptoMarket.utill.parserJsonCoinMarketCap.finalView;
 import com.CryptoMarket.utill.parserJsonCoinMarketCap.chart.QuoteForChart;
 import lombok.Data;
 
@@ -16,5 +16,4 @@ public class CurrentInfoAboutCryptocurrency {
     private double circulatingSupply;
     private double totalSupply;
     private double maxSupply;
-    private ArrayList<QuoteForChart> chart;
 }
