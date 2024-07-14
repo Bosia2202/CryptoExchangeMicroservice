@@ -26,6 +26,7 @@ public class ConvertToCryptoCurrenciesData implements ConvertInterface {
     private CurrentInfoAboutCryptocurrency convertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency(BriefDataAboutCrypto briefDataAboutCrypto) {
         CurrentInfoAboutCryptocurrency temp = new CurrentInfoAboutCryptocurrency();
         temp.setId(briefDataAboutCrypto.getId());
+        temp.setName(briefDataAboutCrypto.getName());
         temp.setSymbol(briefDataAboutCrypto.getSymbol());
         temp.setMaxSupply(briefDataAboutCrypto.getMaxSupply());
         temp.setTotalSupply(briefDataAboutCrypto.getTotalSupply());

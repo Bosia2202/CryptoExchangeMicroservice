@@ -1,4 +1,4 @@
-package repositories;
+package com.CryptoMarket.repositories;
 
 import com.CryptoMarket.models.Quote;
 import org.springframework.data.jpa.repository.JpaRepository;

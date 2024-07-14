@@ -8,7 +8,9 @@ import java.util.Date;
 @Data
 public class BriefDataAboutCrypto {
     private int id;
+    @SerializedName("name")
     private String name;
+    @SerializedName("symbol")
     private String symbol;
     @SerializedName("num_market_pairs")
     private int numMarketPairs;
