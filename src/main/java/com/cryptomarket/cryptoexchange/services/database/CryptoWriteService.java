@@ -24,19 +24,19 @@ public class CryptoWriteService {
 
     @Transactional
     public CryptoBriefInfo createAndReturnCryptoBriefInfo(CurrentInfoAboutCryptocurrency cryptocurrency) {
-        CryptoBriefInfo cryptoBriefInfo = cryptoBriefInfoRepository.findBySymbol(cryptocurrency.getSymbol()).orElseGet(() -> {
+        CryptoBriefInfo tempCryptoBriefInfo = cryptoBriefInfoRepository.findBySymbol(cryptocurrency.getSymbol()).orElseGet(() -> {
             CryptoBriefInfo newCryptoBriefInfo = new CryptoBriefInfo();
             newCryptoBriefInfo.setName(cryptocurrency.getName());
             newCryptoBriefInfo.setSymbol(cryptocurrency.getSymbol());
             return newCryptoBriefInfo;
         });
-        cryptoBriefInfo.setCurrentPrice(cryptocurrency.getPrice());
-        cryptoBriefInfoRepository.save(cryptoBriefInfo);
-        return cryptoBriefInfo;
+        tempCryptoBriefInfo.setCurrentPrice(cryptocurrency.getPrice());
+        cryptoBriefInfoRepository.save(tempCryptoBriefInfo);
+        return tempCryptoBriefInfo;
     }
 
     @Transactional
-    public Quote createQuote(CryptoBriefInfo cryptoBriefInfo, CurrentInfoAboutCryptocurrency cryptocurrency) {
+    public void createQuote(CryptoBriefInfo cryptoBriefInfo, CurrentInfoAboutCryptocurrency cryptocurrency) {
         Quote quote = new Quote();
         quote.setCrypto(cryptoBriefInfo);
         quote.setDate(LocalDateTime.now());
@@ -48,7 +48,6 @@ public class CryptoWriteService {
         quote.setPercentChange24h(cryptocurrency.getPercentChange24h());
         quote.setPercentChange7d(cryptocurrency.getPercentChange7d());
         quoteRepository.save(quote);
-        return quote;
     }
 }
 

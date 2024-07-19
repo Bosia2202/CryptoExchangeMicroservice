@@ -1,6 +1,7 @@
 package com.cryptomarket.cryptoexchange.services.database;
 
 import com.cryptomarket.cryptoexchange.kafka.JsonKafkaProducerService;
+import com.cryptomarket.cryptoexchange.models.Quote;
 import com.cryptomarket.cryptoexchange.models.quote.QuoteAggregate;
 import com.cryptomarket.cryptoexchange.models.quote.QuoteByDay;
 import com.cryptomarket.cryptoexchange.dto.coins.CryptoBriefInfoDto;
@@ -43,15 +44,15 @@ public class CryptoExchangeDataBaseService {
     @Scheduled(fixedDelay = 15, timeUnit = TimeUnit.MINUTES)
     public void updateDataBase() {
         cryptoExchange.getExchangeInfo().ifPresent(data -> {
-            List<CryptoBriefInfo> kafkaValues = new ArrayList<>(100);
+            List<CryptoBriefInfoKafkaDto> kafkaValues = new ArrayList<>(100);
             for (CurrentInfoAboutCryptocurrency currentInfoAboutCryptocurrency : data.getCurrentInfoAboutCryptocurrencies()) {
-                CryptoBriefInfo temp = cryptoWriteService.createAndReturnCryptoBriefInfo(currentInfoAboutCryptocurrency);
-                temp.addQuote(cryptoWriteService.createQuote(temp,currentInfoAboutCryptocurrency));
-                kafkaValues.add(temp);
+                CryptoBriefInfo tempCryptoBriefInfo = cryptoWriteService.createAndReturnCryptoBriefInfo(currentInfoAboutCryptocurrency);
+                cryptoWriteService.createQuote(tempCryptoBriefInfo,currentInfoAboutCryptocurrency);
+                kafkaValues.add(new CryptoBriefInfoKafkaDto(currentInfoAboutCryptocurrency));
             }
             jsonKafkaProducerService.sendCryptocurrenciesToKafka(kafkaValues);
         });
-      log.info("DataBase update " + LocalDateTime.now().toString());
+        log.info("DataBase update " + LocalDateTime.now().toString());
     }
 
     public List<QuoteByDay> getQuoteInfoAboutCryptocurrencyForDay(String symbol) {

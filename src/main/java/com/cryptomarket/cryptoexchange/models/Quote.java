@@ -1,7 +1,9 @@
 package com.cryptomarket.cryptoexchange.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -9,6 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "quotes")
 @Data
+@NoArgsConstructor
 public class Quote {
     @Id
     @GeneratedValue
@@ -24,4 +27,5 @@ public class Quote {
     @ManyToOne
     @JoinColumn(name = "crypto_id",nullable = false)
     private CryptoBriefInfo crypto;
+
 }

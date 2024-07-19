@@ -1,6 +1,8 @@
 package com.cryptomarket.cryptoexchange.kafka;
 
+import com.cryptomarket.cryptoexchange.dto.coins.CryptoBriefInfoDto;
 import com.cryptomarket.cryptoexchange.models.CryptoBriefInfo;
+import com.cryptomarket.cryptoexchange.services.database.CryptoBriefInfoKafkaDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -22,8 +24,8 @@ public class JsonKafkaProducerService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendCryptocurrenciesToKafka(List<CryptoBriefInfo> cryptoBriefInfoList) {
-        Message<List<CryptoBriefInfo>> message = MessageBuilder
+    public void sendCryptocurrenciesToKafka(List<CryptoBriefInfoKafkaDto> cryptoBriefInfoList) {
+        Message<List<CryptoBriefInfoKafkaDto>> message = MessageBuilder
                 .withPayload(cryptoBriefInfoList)
                 .setHeader(KafkaHeaders.TOPIC,"cryptocurrency-prices")
                 .build();
