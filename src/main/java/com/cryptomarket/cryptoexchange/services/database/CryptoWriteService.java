@@ -2,12 +2,13 @@ package com.cryptomarket.cryptoexchange.services.database;
 
 import com.cryptomarket.cryptoexchange.models.CryptoBriefInfo;
 import com.cryptomarket.cryptoexchange.models.Quote;
-import com.cryptomarket.cryptoexchange.utill.parserJsonCoinMarketCap.finalView.CurrentInfoAboutCryptocurrency;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.cryptomarket.cryptoexchange.repositories.CryptoBriefInfoRepository;
 import com.cryptomarket.cryptoexchange.repositories.QuoteRepository;
+import com.cryptomarket.cryptoexchange.utill.parserJsonCoinMarketCap.finalView.CurrentInfoAboutCryptocurrency;
 
 import java.time.LocalDateTime;
 
@@ -47,6 +48,9 @@ public class CryptoWriteService {
         quote.setPercentChange1h(cryptocurrency.getPercentChange1h());
         quote.setPercentChange24h(cryptocurrency.getPercentChange24h());
         quote.setPercentChange7d(cryptocurrency.getPercentChange7d());
+        quote.setMarketCap(cryptocurrency.getMarketCap());
+        quote.setFullyDilutedMarketCap(cryptocurrency.getFullyDilutedMarketCap());
+        quote.setMarketCapDominance(cryptocurrency.getMarketCapDominance());
         quoteRepository.save(quote);
     }
 }

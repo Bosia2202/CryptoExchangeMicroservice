@@ -1,9 +1,11 @@
 package com.cryptomarket.cryptoexchange.interfeces;
 
+import java.util.ArrayList;
+
 import com.cryptomarket.cryptoexchange.utill.parserJsonCoinMarketCap.briefInformation.BriefDataAboutCrypto;
 import com.cryptomarket.cryptoexchange.utill.parserJsonCoinMarketCap.finalView.CurrentInfoAboutCryptocurrency;
 
-import java.util.ArrayList;
 public interface ConvertInterface {
-    ArrayList<CurrentInfoAboutCryptocurrency> getConvertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency(ArrayList<BriefDataAboutCrypto> briefDataAboutCryptoArrayList);
+    ArrayList<CurrentInfoAboutCryptocurrency> getConvertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency(
+            ArrayList<BriefDataAboutCrypto> briefDataAboutCryptoArrayList);
 }

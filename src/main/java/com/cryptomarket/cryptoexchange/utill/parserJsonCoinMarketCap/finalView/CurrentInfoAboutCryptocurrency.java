@@ -1,4 +1,5 @@
 package com.cryptomarket.cryptoexchange.utill.parserJsonCoinMarketCap.finalView;
+import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
@@ -13,4 +14,7 @@ public class CurrentInfoAboutCryptocurrency {
     private double circulatingSupply;
     private double totalSupply;
     private double maxSupply;
+    private double marketCap;
+    private double marketCapDominance;
+    private double fullyDilutedMarketCap;
 }

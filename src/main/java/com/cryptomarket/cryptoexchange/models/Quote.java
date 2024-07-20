@@ -1,5 +1,6 @@
 package com.cryptomarket.cryptoexchange.models;
 
+import com.google.gson.annotations.SerializedName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,9 @@ public class Quote {
     private double totalSupply;
     private double maxSupply;
     private LocalDateTime date;
+    private double marketCap;
+    private double marketCapDominance;
+    private double fullyDilutedMarketCap;
     @ManyToOne
     @JoinColumn(name = "crypto_id",nullable = false)
     private CryptoBriefInfo crypto;

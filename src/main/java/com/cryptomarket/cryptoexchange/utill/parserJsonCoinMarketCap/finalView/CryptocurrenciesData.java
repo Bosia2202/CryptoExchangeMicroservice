@@ -1,8 +1,8 @@
 package com.cryptomarket.cryptoexchange.utill.parserJsonCoinMarketCap.finalView;
 
-import lombok.Data;
-
 import java.util.ArrayList;
+
+import lombok.Data;
 
 @Data
 public class CryptocurrenciesData {

@@ -36,5 +36,5 @@ public interface CryptoBriefInfoRepository extends JpaRepository<CryptoBriefInfo
     List<QuoteByDay> findBySymbolWithQuotesForDay(@Param("symbol") String symbol);
 
     Optional<CryptoBriefInfo> findBySymbol(String symbol);
-    List<CryptoBriefInfo> findAll();
+
 }
