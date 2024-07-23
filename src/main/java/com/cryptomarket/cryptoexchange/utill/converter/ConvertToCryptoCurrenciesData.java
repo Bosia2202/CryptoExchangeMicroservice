@@ -13,11 +13,15 @@ import java.util.stream.Collectors;
 public class ConvertToCryptoCurrenciesData implements ConvertInterface {
 
     @Override
-    public ArrayList<CurrentInfoAboutCryptocurrency> getConvertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency(ArrayList<BriefDataAboutCrypto> briefDataAboutCryptoArrayList) {
-        return briefDataAboutCryptoArrayList.stream().map(this::convertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency).collect(Collectors.toCollection(ArrayList::new));
+    public ArrayList<CurrentInfoAboutCryptocurrency> getConvertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency(
+            ArrayList<BriefDataAboutCrypto> briefDataAboutCryptoArrayList) {
+        return briefDataAboutCryptoArrayList.stream()
+                .map(this::convertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private CurrentInfoAboutCryptocurrency convertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency(BriefDataAboutCrypto briefDataAboutCrypto) {
+    private CurrentInfoAboutCryptocurrency convertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency(
+            BriefDataAboutCrypto briefDataAboutCrypto) {
         CurrentInfoAboutCryptocurrency temp = new CurrentInfoAboutCryptocurrency();
         temp.setId(briefDataAboutCrypto.getId());
         temp.setName(briefDataAboutCrypto.getName());

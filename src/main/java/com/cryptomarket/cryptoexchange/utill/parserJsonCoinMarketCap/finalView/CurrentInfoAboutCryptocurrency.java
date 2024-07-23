@@ -1,5 +1,4 @@
 package com.cryptomarket.cryptoexchange.utill.parserJsonCoinMarketCap.finalView;
-import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data

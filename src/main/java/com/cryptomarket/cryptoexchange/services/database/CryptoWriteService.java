@@ -10,9 +10,12 @@ import com.cryptomarket.cryptoexchange.repositories.CryptoBriefInfoRepository;
 import com.cryptomarket.cryptoexchange.repositories.QuoteRepository;
 import com.cryptomarket.cryptoexchange.utill.parserJsonCoinMarketCap.finalView.CurrentInfoAboutCryptocurrency;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.time.LocalDateTime;
 
 @Service
+@Slf4j
 public class CryptoWriteService {
     private CryptoBriefInfoRepository cryptoBriefInfoRepository;
     private QuoteRepository quoteRepository;
@@ -25,14 +28,23 @@ public class CryptoWriteService {
 
     @Transactional
     public CryptoBriefInfo createAndReturnCryptoBriefInfo(CurrentInfoAboutCryptocurrency cryptocurrency) {
-        CryptoBriefInfo tempCryptoBriefInfo = cryptoBriefInfoRepository.findBySymbol(cryptocurrency.getSymbol()).orElseGet(() -> {
-            CryptoBriefInfo newCryptoBriefInfo = new CryptoBriefInfo();
-            newCryptoBriefInfo.setName(cryptocurrency.getName());
-            newCryptoBriefInfo.setSymbol(cryptocurrency.getSymbol());
-            return newCryptoBriefInfo;
-        });
+        CryptoBriefInfo tempCryptoBriefInfo = cryptoBriefInfoRepository.findBySymbol(cryptocurrency.getSymbol())
+                .orElseGet(() -> {
+                    CryptoBriefInfo newCryptoBriefInfo = new CryptoBriefInfo();
+                    newCryptoBriefInfo.setName(cryptocurrency.getName());
+                    newCryptoBriefInfo.setSymbol(cryptocurrency.getSymbol());
+                    newCryptoBriefInfo.setPercentChange24h(cryptocurrency.getPercentChange24h());
+                    newCryptoBriefInfo.setPercentChange7d(cryptocurrency.getPercentChange7d());
+                    newCryptoBriefInfo.setMarketCap(cryptocurrency.getMarketCap());
+                    newCryptoBriefInfo.setPercentChange1h(cryptocurrency.getPercentChange1h());
+                    newCryptoBriefInfo.setFullyDilutedMarketCap(cryptocurrency.getFullyDilutedMarketCap());
+                    newCryptoBriefInfo.setMarketCapDominance(cryptocurrency.getMarketCapDominance());
+                    return newCryptoBriefInfo;
+                });
+       
         tempCryptoBriefInfo.setCurrentPrice(cryptocurrency.getPrice());
         cryptoBriefInfoRepository.save(tempCryptoBriefInfo);
+        log.info("Entity save -> " + tempCryptoBriefInfo.toString());
         return tempCryptoBriefInfo;
     }
 
@@ -45,13 +57,7 @@ public class CryptoWriteService {
         quote.setMaxSupply(cryptocurrency.getMaxSupply());
         quote.setCirculatingSupply(cryptocurrency.getCirculatingSupply());
         quote.setTotalSupply(cryptocurrency.getTotalSupply());
-        quote.setPercentChange1h(cryptocurrency.getPercentChange1h());
-        quote.setPercentChange24h(cryptocurrency.getPercentChange24h());
-        quote.setPercentChange7d(cryptocurrency.getPercentChange7d());
-        quote.setMarketCap(cryptocurrency.getMarketCap());
-        quote.setFullyDilutedMarketCap(cryptocurrency.getFullyDilutedMarketCap());
-        quote.setMarketCapDominance(cryptocurrency.getMarketCapDominance());
         quoteRepository.save(quote);
+        log.info("Quote save -> " + quote.toString());
     }
 }
-

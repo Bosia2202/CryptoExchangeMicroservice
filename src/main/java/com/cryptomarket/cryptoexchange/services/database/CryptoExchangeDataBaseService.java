@@ -7,6 +7,8 @@ import com.cryptomarket.cryptoexchange.dto.coins.CryptoBriefInfoDto;
 import com.cryptomarket.cryptoexchange.interfeces.CryptoExchange;
 import com.cryptomarket.cryptoexchange.models.CryptoBriefInfo;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import com.cryptomarket.cryptoexchange.repositories.CryptoBriefInfoRepository;
@@ -29,6 +31,7 @@ public class CryptoExchangeDataBaseService {
     private static final String LOG_DATABASE_UPDATE_SUCCESS = "Database update successful at {}";
     private static final String LOG_DATABASE_UPDATE_FAILED = "Failed to update DataBase";
 
+    @Autowired
     public CryptoExchangeDataBaseService(CryptoExchange cryptoExchange,
             CryptoBriefInfoRepository cryptoBriefInfoRepository,
             CryptoWriteService cryptoWriteService, JsonKafkaProducerService jsonKafkaProducerService) {
@@ -44,7 +47,7 @@ public class CryptoExchangeDataBaseService {
             cryptoExchange.getExchangeInfo().ifPresentOrElse(this::kafkaPushProcess,
                     () -> log.error(LOG_DATABASE_UPDATE_FAILED));
         } catch (Exception e) {
-            log.error(LOG_DATABASE_UPDATE_FAILED);
+            log.error(LOG_DATABASE_UPDATE_FAILED + " -> " + e.getMessage());
         }
     }
 
@@ -85,7 +88,17 @@ public class CryptoExchangeDataBaseService {
                 .map(info -> {
                     CryptoBriefInfo tempCryptoBriefInfo = cryptoWriteService.createAndReturnCryptoBriefInfo(info);
                     cryptoWriteService.createQuote(tempCryptoBriefInfo, info);
-                    return new CryptoBriefInfoKafkaDto(info);
+                    CryptoBriefInfoKafkaDto kafka = new CryptoBriefInfoKafkaDto();
+                    kafka.setSymbol(info.getSymbol());
+                    kafka.setName(info.getName());
+                    kafka.setCurrentPrice(info.getPrice());
+                    kafka.setPercentChange1h(info.getPercentChange1h());
+                    kafka.setPercentChange24h(info.getPercentChange24h());
+                    kafka.setPercentChange7d(info.getPercentChange7d());
+                    kafka.setCirculatingSupply(info.getCirculatingSupply());
+                    kafka.setTotalSupply(info.getTotalSupply());
+                    kafka.setMaxSupply(info.getMaxSupply());
+                    return kafka;
                 }).toList();
         jsonKafkaProducerService.sendCryptocurrenciesToKafka(kafkaValues);
         log.info(LOG_DATABASE_UPDATE_SUCCESS, LocalDateTime.now());

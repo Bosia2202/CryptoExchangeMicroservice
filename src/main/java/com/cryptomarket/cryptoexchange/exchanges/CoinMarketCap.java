@@ -1,5 +1,6 @@
 package com.cryptomarket.cryptoexchange.exchanges;
 
+import com.cryptomarket.cryptoexchange.exceptions.ApiRequestRuntimeException;
 import com.cryptomarket.cryptoexchange.interfeces.ConvertInterface;
 import com.cryptomarket.cryptoexchange.interfeces.CryptoExchange;
 import com.cryptomarket.cryptoexchange.interfeces.ParserInterface;
@@ -31,19 +32,21 @@ public class CoinMarketCap implements CryptoExchange {
     private ConvertInterface converter;
     private ParserInterface parser;
 
-    @Qualifier("coinMarketCap")
+    @Qualifier("httpGetCoinMarketCap")
     private HttpGet httpRequest;
 
     @Autowired
-    public CoinMarketCap(ConvertInterface converter, ParserInterface parser) {
+    public CoinMarketCap(ConvertInterface converter, ParserInterface parser, HttpGet httpRequest) {
         this.converter = converter;
         this.parser = parser;
+        this.httpRequest = httpRequest;
     }
 
     @Override
     public Optional<CryptocurrenciesData> getExchangeInfo() {
         try {
-            CryptocurrenciesData data = getCryptoCurrenciesData(getBriefInfoAboutCryptocurrencies(HttpClients.createDefault()));
+            CryptocurrenciesData data = getCryptoCurrenciesData(
+                    getBriefInfoAboutCryptocurrencies(HttpClients.createDefault()));
             return Optional.of(data);
         } catch (IOException ioException) {
             log.info("Failed to get information from CoinMarketCap");
@@ -53,9 +56,11 @@ public class CoinMarketCap implements CryptoExchange {
 
     private CryptocurrenciesData getCryptoCurrenciesData(String stringJsonBriefInfoAboutCryptocurrencies) {
         CryptocurrenciesData returnValue = new CryptocurrenciesData();
-        DefaultInfoOfAllCryptocurrencies defaultInfoOfAllCryptocurrencies = parser.parsingOfAllCryptocurrenciesFromApi(stringJsonBriefInfoAboutCryptocurrencies);
-        ArrayList<CurrentInfoAboutCryptocurrency> cryptocurrencyArrayList = converter.getConvertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency(
-                defaultInfoOfAllCryptocurrencies.getData());
+        DefaultInfoOfAllCryptocurrencies defaultInfoOfAllCryptocurrencies = parser
+                .parsingOfAllCryptocurrenciesFromApi(stringJsonBriefInfoAboutCryptocurrencies);
+        ArrayList<CurrentInfoAboutCryptocurrency> cryptocurrencyArrayList = converter
+                .getConvertDefaultInfoOfAllCryptocurrencyToCurrentInfoAboutCryptocurrency(
+                        defaultInfoOfAllCryptocurrencies.getData());
         returnValue.setCurrentInfoAboutCryptocurrencies(cryptocurrencyArrayList);
         return returnValue;
     }

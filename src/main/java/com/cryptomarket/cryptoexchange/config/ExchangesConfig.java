@@ -26,7 +26,7 @@ public class ExchangesConfig {
     private String latestUrl;
 
     @Bean
-    public HttpGet coinMarketCap() {
+    public HttpGet httpGetCoinMarketCap() {
           try {
               URIBuilder query = new URIBuilder(latestUrl);
               List<NameValuePair> parameters = new ArrayList<>();

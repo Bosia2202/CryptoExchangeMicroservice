@@ -8,12 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class GsonParser implements ParserInterface {
     private final Gson gson;
+
     public GsonParser() {
-       this.gson = new Gson();
+        this.gson = new Gson();
     }
+
     @Override
     public DefaultInfoOfAllCryptocurrencies parsingOfAllCryptocurrenciesFromApi(String response) {
-        return gson.fromJson(response,DefaultInfoOfAllCryptocurrencies.class);
+        return gson.fromJson(response, DefaultInfoOfAllCryptocurrencies.class);
     }
 
 }

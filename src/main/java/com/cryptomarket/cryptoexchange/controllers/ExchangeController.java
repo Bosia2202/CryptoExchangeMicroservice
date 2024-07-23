@@ -20,17 +20,17 @@ public class ExchangeController {
         this.cryptoExchangeDataBaseService = cryptoExchangeDataBaseService;
     }
 
-    @GetMapping("/quote/all")
+    @GetMapping("/quotes/all")
     public List<CryptoBriefInfoDto> showActualBriefInformationAboutCryptocurrencies() {
         return cryptoExchangeDataBaseService.getActualBriefInfoAboutCryptocurrencies();
     }
 
-    @GetMapping("/quote")
+    @GetMapping("/quotes/day")
     public List<QuoteByDay> showQuoteInfoAboutCryptocurrencyForDay(@RequestParam String symbol){
         return cryptoExchangeDataBaseService.getQuoteInfoAboutCryptocurrencyForDay(symbol);
     }
 
-    @GetMapping("/quote")
+    @GetMapping("/quotes/date")
     public List<QuoteAggregate> showQuoteInfoAboutCryptocurrencyFromDate(@RequestParam String symbol, @RequestBody String localDateTime){
         return cryptoExchangeDataBaseService.getQuoteInfoAboutCryptocurrencyFromDate(symbol,localDateTime);
     }
@@ -40,7 +40,7 @@ public class ExchangeController {
         return cryptoExchangeDataBaseService.getAllQuoteInfoAboutCryptocurrency(symbol);
     }
 
-    @GetMapping("/quote")
+    @GetMapping("/quote/date")
     public List<QuoteAggregate> showQuotesBetweenDatesAboutCryptocurrency(@RequestParam String symbol, @RequestBody String startDate, @RequestBody String endDate){
         return cryptoExchangeDataBaseService.getQuotesBetweenDatesAboutCryptocurrency(symbol,startDate,endDate);
     }
